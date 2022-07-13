@@ -29,22 +29,18 @@ const createBooks = async function (req, res) {
          if (duplicateTitle) {
             return res.status(400).send({ status: false, message: "This Title is Already Exist" });
         }
-
-        //check the excerpt is empty
+       //check the excerpt is empty
         if(!excerpt ||typeof excerpt !=='string' || excerpt.trim().length==0 ){ 
             return res.status(400).send({ status: false, message: "Excerpt field is mandatory" });
           }
-
         //check the userId is empty
         if(!userId ||typeof userId !=='string' || userId.trim().length==0){ 
             return res.status(400).send({ status: false, message: "userId field is mandatory" });
           }
-
         //check the ISBN is empty
         if(!ISBN ||typeof ISBN !=='string' || ISBN.trim().length==0){ 
             return res.status(400).send({ status: false, message: "ISBN field is mandatory" });
           }
-
         //check the uniqness of ISBN
         let duplicateISBN = await bookModel.findOne({ ISBN: ISBN });
           if (duplicateISBN) {
@@ -106,7 +102,7 @@ const createBooks = async function (req, res) {
                 data.excerpt = excerpt.trim().split(" ").filter(word=>word).join(" ")
            }
        
-            data.title = title.toLowerCase().trim().split(" ").filter(word=>word).join(" ")
+            data.title = title.trim().split(" ").filter(word=>word).join(" ")
             data.category= category.trim().split(" ").filter(word=>word).join(" ")
            
       

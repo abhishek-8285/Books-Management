@@ -57,7 +57,7 @@ const createUser = async function (req, res) {
         }
          //check uniqueness of phone
          if (await userModel.findOne({ phone: phone }))
-         return res.status(400).send({ message: "Phone already exist" })
+         return res.status(400).send({ status :false, message: "Phone already exist" })
 
        //check email is present
         if (!email ||typeof email !=='string' || email.trim().length==0) {
@@ -158,9 +158,7 @@ const loginUser = async function (req, res) {
          return res.status(401).send({ status: false, message: "credentials are not correct" });
  
     
-    // var d = new Date();
-    // //calculate exp of 1 hrs.
-    // var calculatedExpiresIn = (((d.getTime()) + (60 * 60 * 1000))-(d.getTime() - d.getMilliseconds())/1000);
+    
     
      //token created here
         var token = jwt.sign(
@@ -173,7 +171,7 @@ const loginUser = async function (req, res) {
             "ProjectBookMgmt"
                 );
      res.setHeader("x-api-key", token);
-     return res.status(201).send({ status: true, token: token});
+     return res.status(201).send({ status: true, message : "success" ,data: token});
  }
  catch (err) {
      console.log(err.message)

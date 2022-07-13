@@ -13,7 +13,8 @@ const authentication = async function (req,res,next){
 
         try{let decodedToken = jwt.verify(token,"ProjectBookMgmt"); 
        
-        req.decodedToken=decodedToken;}catch(err){
+        req.decodedToken=decodedToken;}
+        catch(err){
             return res.status(401).send({status:false,data: err.message, message:"token is invalid"})
         }
         next() 
@@ -27,7 +28,7 @@ let authorization1=async function (req,res,next){
     try{
         let userId=req.body.userId
         const decodedToken=req.decodedToken
-let data = req.body
+       let data = req.body
          //check data is exist | key exist in data
          if (Object.keys(data).length == 0) {
             return res.status(400).send({ status: false, msg: "Data is required to add a user" })
@@ -39,7 +40,7 @@ let data = req.body
         else if(mongoose.Types.ObjectId.isValid(userId)==false){
             return res.status(400).send({status:false, message:"userId is invalid"})
         }
-        let userById=await userModel.findOne({_id:userId,isDeleted:false})
+        let userById=  await userModel.findOne({_id:userId,isDeleted:false})
 
         if(!userById){
             return res.status(400).send({status:false, message:"user with this userId not found"})
@@ -72,7 +73,7 @@ let authorization2=async function (req,res,next){
         if(!bookById){
             return res.status(400).send({status:false, message:"book with this bookId not found"})
         }
-        else if(decodedToken.userId !=bookById.userId.toString()){
+        else if(decodedToken.userId != bookById.userId.toString()){
             return res.status(403).send({status:false,message:"you are Unauthorized for this"})
         }
         next();
