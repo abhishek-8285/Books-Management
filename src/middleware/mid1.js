@@ -11,16 +11,14 @@ const authentication = async function (req,res,next){
 
         if(!token) return res.status(400).send({status:false, message:"token must be present in header"});
 
-        try{let decodedToken = jwt.verify(token,"ProjectBookMgmt"); 
+        let decodedToken = jwt.verify(token,"ProjectBookMgmt"); 
        
-        req.decodedToken=decodedToken;}
-        catch(err){
-            return res.status(401).send({status:false,data: err.message, message:"token is invalid"})
-        }
+        req.decodedToken=decodedToken;
+
         next() 
     }
     catch(err){
-        return res.status(500).send({status:false, message:err.message})
+        return res.status(401).send({status:false, message:err.message})
     }
 } 
 //authorization for create book
@@ -65,7 +63,7 @@ let authorization2=async function (req,res,next){
         if(!bookId){
             return res.status(400).send({status:false, message:"bookId must present"})
         } 
-        else if(mongoose.Types.ObjectId.isValid(bookId)==false){
+        if(mongoose.Types.ObjectId.isValid(bookId)==false){
             return res.status(400).send({status:false, message:"bookId is invalid"})
         }
         let bookById=await bookModel.findOne({_id:bookId,isDeleted:false})
@@ -73,7 +71,8 @@ let authorization2=async function (req,res,next){
         if(!bookById){
             return res.status(404).send({status:false, message:"book with this bookId not found"})
         }
-        else if(decodedToken.userId != bookById.userId.toString()){
+        
+        if(decodedToken.userId != bookById.userId.toString()){
             return res.status(403).send({status:false,message:"you are Unauthorized for this"})
         }
         next();

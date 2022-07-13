@@ -190,12 +190,12 @@ const deleteReview = async function(req, res) {
 
     const delReview = await reviewModel.findByIdAndUpdate({ _id: existReview._id },{ $set: { isDeleted: true } });
     
-    // if (delReview) {
-    //   const updateBookReview = await bookModel.findOneAndUpdate(
-    //     { _id: delReview.bookId, isDeleted: false },{ $inc: { reviews: -1 } },{ new: true }
-    //   );
+    if (delReview) {
+      const updateBookReview = await bookModel.findOneAndUpdate(
+        { _id: delReview.bookId, isDeleted: false },{ $inc: { reviews: -1 } },{ new: true }
+      );}
 
-      return res.status(200).send({ status: true,message: "successfully deleted",data: delReview});
+      return res.status(200).send({ status: true,message: "successfully deleted"});
     }
     catch (err) {
     return res.status(500).send({status: false,message: err.message});

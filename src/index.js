@@ -1,7 +1,7 @@
 //Import Modules
 const express = require('express');
 const bodyParser = require('body-parser');
-const route = require('./route/route.js');
+const route = require('./router/route.js');
 const mongoose = require('mongoose');
 
 
@@ -10,10 +10,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
-
-  
 //Connecting Data-Base
-mongoose.connect("mongodb+srv://Abhilasha-93:jasta1234@cluster0.vl2c0ns.mongodb.net/group2Database?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://betechnoid:Abhishek8285366507@cluster0.ctbkbk3.mongodb.net/group2Database?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
     .then(() => console.log("MongoDb is connected"))
