@@ -89,7 +89,7 @@ const createReview = async function(req, res)  {
       const updateBookReview = await bookModel.findOneAndUpdate(
         { _id: createdreviews.bookId, isDeleted: false },{ $inc: { reviews: 1 } },{ new: true }).lean();
      
-      updateBookReview.responData=findCreRev
+      updateBookReview.reviewsData=findCreRev
       
       return res.status(201).send({status: true,message: "Success",data: updateBookReview});
     }
@@ -157,7 +157,7 @@ const updateReview = async function(req, res) {
     const updateReview = await reviewModel.findByIdAndUpdate({ _id: paramreview },{ $set: filteredData },{ new: true }).select({_id:1, bookId:1, reviewedBy:1, reviewedAt:1, rating:1, review:1});
    
     if (updateReview) {
-      existBook.responData=updateReview
+      existBook.reviewsData=updateReview
        
       return res.status(200).send({status: true,message: "Success",data: existBook});
     }
@@ -190,14 +190,14 @@ const deleteReview = async function(req, res) {
 
     const delReview = await reviewModel.findByIdAndUpdate({ _id: existReview._id },{ $set: { isDeleted: true } });
     
-    if (delReview) {
-      const updateBookReview = await bookModel.findOneAndUpdate(
-        { _id: delReview.bookId, isDeleted: false },{ $inc: { reviews: -1 } },{ new: true }
-      );
+    // if (delReview) {
+    //   const updateBookReview = await bookModel.findOneAndUpdate(
+    //     { _id: delReview.bookId, isDeleted: false },{ $inc: { reviews: -1 } },{ new: true }
+    //   );
 
-      return res.status(200).send({ status: true,message: "successfully deleted",data: updateBookReview });
+      return res.status(200).send({ status: true,message: "successfully deleted",data: delReview});
     }
-  } catch (err) {
+    catch (err) {
     return res.status(500).send({status: false,message: err.message});
   }
 };
